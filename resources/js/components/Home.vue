@@ -15,6 +15,7 @@
                                     type="text"
                                     class="form-control"
                                     v-model="searchKey"
+                                    placeholder="Full Name"
                                 />
                                 <button
                                     class="btn btn-primary btn-sm"

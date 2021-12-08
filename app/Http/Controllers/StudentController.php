@@ -87,16 +87,14 @@ class StudentController extends Controller
 
     public function getStudentMarks(Request $request)
     {
-        return StudentMarks::when(!empty($request->email), function($query) use ($request) {
-            return $query->where('name','LIKE','%'.$request->email.'%');
-        })->when(!empty($request->student_id), function($query) use ($request) {
-            return $query->where('name','LIKE','%'.$request->student_id.'%');
+        return StudentMarks::when(!empty($request->student_id), function($query) use ($request) {
+            return $query->where('student_id','LIKE','%'.$request->student_id.'%');
         })->when(!empty($request->subject), function($query) use ($request) {
-            return $query->where('name','LIKE','%'.$request->subject.'%');
+            return $query->where('subject','LIKE','%'.$request->subject.'%');
         })->when(!empty($request->marks), function($query) use ($request) {
-            return $query->where('name','LIKE','%'.$request->marks.'%');
+            return $query->where('marks','LIKE','%'.$request->marks.'%');
         })->when(!empty($request->semester), function($query) use ($request) {
-            return $query->where('name','LIKE','%'.$request->semester.'%');
+            return $query->where('semester','LIKE','%'.$request->semester.'%');
         })->select('id', 'student_id', 'subject', 'marks', 'semester')->get();
     }
 }
