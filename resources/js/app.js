@@ -7,11 +7,14 @@
 import VueRouter from 'vue-router'
 import Routes from './routes';
 import App from './App.vue';
+import VeeValidate from 'vee-validate';
 
 require('./bootstrap');
 
 window.Vue = require('vue').default;
 Vue.use(VueRouter)
+Vue.use(VeeValidate);
+
 
 const router = new VueRouter(Routes);
 
