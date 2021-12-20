@@ -1,30 +1,40 @@
 <template>
-    <div class="container student_marks">
+    <div class="container home">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header d-flex align-items-center">
-                        <div>Student Mark</div>
+                    <div class="card-header d-flex justify-content-between">
                         <div
                             class="d-flex align-items-center justify-content-between"
                         >
-                            <input
-                                type="text"
-                                class="form-control"
-                                v-model="searchKey"
-                                placeholder="Student Id"
-                            />
-                            <input
-                                type="text"
-                                class="form-control"
-                                v-model="searchKeySub"
-                                placeholder="Subject"
-                            />
-                            <button
-                                class="btn btn-primary btn-sm"
-                                @click="searchItem()"
+                            <div>Exam schedule</div>
+                            <div
+                                class="d-flex align-items-center justify-content-between"
                             >
-                                Search
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="searchKey"
+                                    placeholder="Full Name"
+                                />
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    @click="searchItem()"
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <button
+                                class="btn btn-primary"
+                                @click="
+                                    $router.push({
+                                        name: 'exam-schedule-detail',
+                                    })
+                                "
+                            >
+                                Create
                             </button>
                         </div>
                     </div>
@@ -33,20 +43,19 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Student Id</th>
+                                    <th>Class</th>
                                     <th>Subject</th>
-                                    <th>Marks</th>
-                                    <th>Semester</th>
+                                    <th>Student Name</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="(studentMark, index) in studentMarks"
+                                    v-for="(student, index) in examSchedules"
                                     :key="index"
                                 >
                                     <td
-                                        v-for="(item, index) in studentMark"
+                                        v-for="(item, index) in student"
                                         :key="index"
                                     >
                                         {{ item }}
@@ -56,11 +65,10 @@
                                             class="btn btn-primary btn-sm"
                                             @click="
                                                 $router.push({
-                                                    name: 'student-marks-detail',
+                                                    name: 'exam-schedule-detail',
                                                     params: {
                                                         isUpdate: true,
-                                                        studentMark:
-                                                            studentMark,
+                                                        student: student,
                                                     },
                                                 })
                                             "
@@ -68,12 +76,21 @@
                                             Edit
                                         </button>
                                         <button
-                                            class="btn btn-danger btn-sm"
+                                            class="btn btn-primary btn-sm"
                                             @click="
-                                                deleteStudentMarks(
-                                                    studentMark.id
-                                                )
+                                                $router.push({
+                                                    name: 'exam-schedule-detail',
+                                                    params: {
+                                                        studentId: student.id,
+                                                    },
+                                                })
                                             "
+                                        >
+                                            Create mask
+                                        </button>
+                                        <button
+                                            class="btn btn-danger btn-sm"
+                                            @click="deleteStudent(student.id)"
                                         >
                                             Delete
                                         </button>
@@ -89,30 +106,30 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     data() {
         return {
-            studentMarks: [],
+            examSchedules: [],
             searchKey: "",
         };
     },
     methods: {
-        getStudentMarks() {
+        getStudent() {
             axios
-                .get("/student-mark")
+                .get("/exam")
                 .then((response) => {
-                    this.studentMarks = response.data;
+                    this.examSchedules = response.data;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
-
-        deleteStudentMarks(id) {
+        deleteStudent(id) {
             axios
-                .delete(`/student-mark/${id}`)
+                .delete(`/exam/${id}`)
                 .then((response) => {
-                    this.getStudentMarks();
+                    this.getStudent();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -120,14 +137,9 @@ export default {
         },
         searchItem() {
             axios
-                .get(`/student-mark`, {
-                    params: {
-                        student_id: this.searchKey,
-                        subject: this.searchKeySub,
-                    },
-                })
+                .get(`/students`, { params: { full_name: this.searchKey } })
                 .then((response) => {
-                    this.studentMarks = response.data;
+                    this.examSchedules = response.data;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -135,13 +147,13 @@ export default {
         },
     },
     mounted() {
-        this.getStudentMarks();
+        this.getStudent();
     },
 };
 </script>
 
 <style scoped lang="scss">
-.student_marks {
+.home {
     .card-header {
         div {
             margin: 0px 10px;

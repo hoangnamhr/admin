@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Students;
 use App\Models\StudentMarks;
+use App\Models\ExamSchedule;
 
 class StudentController extends Controller
 {
@@ -22,8 +23,9 @@ class StudentController extends Controller
 
     public function deleteStudent(Request $request, $id)
     {
-        Students::where('id', $id)->delete();
-
+        Students::where('id', $id)->first();
+        StudentMarks::where('student_id', $id)->delete();
+        ExamSchedule::where('student_id', $id)->delete();
         return response()->json("success");
     }
 
@@ -96,5 +98,46 @@ class StudentController extends Controller
         })->when(!empty($request->semester), function($query) use ($request) {
             return $query->where('semester','LIKE','%'.$request->semester.'%');
         })->select('id', 'student_id', 'subject', 'marks', 'semester')->get();
+    }
+
+    public function createExamSchedule(Request $request)
+    {
+        $model = new ExamSchedule();
+        $model->class = $request->class;
+        $model->student_id = $request->student_id;
+        $model->subject = $request->subject;
+        $model->date = $request->date;
+
+        return response()->json($model->save());
+    }
+
+    public function deleteExamSchedule(Request $request, $id)
+    {
+        ExamSchedule::where('id', $id)->delete();
+
+        return response()->json("success");
+    }
+
+    public function updateExamSchedule(Request $request)
+    {
+        $params = [
+            'class' => $request->class,
+            'subject' => $request->subject,
+            'student_id' => $request->student_id,
+            'date' => $request->date,
+        ];
+
+        ExamSchedule::where('id', $request->id)->update($params);
+    }
+
+    public function getExamSchedule(Request $request)
+    {
+        return ExamSchedule::when(!empty($request->class), function($query) use ($request) {
+            return $query->where('class','LIKE','%'.$request->class.'%');
+        })->when(!empty($request->student_id), function($query) use ($request) {
+            return $query->where('student_id','LIKE','%'.$request->student_id.'%');
+        })->when(!empty($request->subject), function($query) use ($request) {
+            return $query->where('subject','LIKE','%'.$request->subject.'%');
+        })->select('id', 'class', 'student_id', 'subject', 'date')->get();
     }
 }

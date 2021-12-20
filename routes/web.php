@@ -18,6 +18,7 @@ Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'welcome']
 Route::get('/student-detail', [App\Http\Controllers\HomeController::class, 'welcome']);
 Route::get('/student-marks', [App\Http\Controllers\HomeController::class, 'welcome']);
 Route::get('/student-marks-detail', [App\Http\Controllers\HomeController::class, 'welcome']);
+Route::get('/exam-schedule', [App\Http\Controllers\HomeController::class, 'welcome']);
 
 Auth::routes();
 
@@ -35,3 +36,8 @@ Route::get('/student-mark', [App\Http\Controllers\StudentController::class, 'get
 Route::post('/student-mark', [App\Http\Controllers\StudentController::class, 'createStudentMarks']);
 Route::delete('/student-mark/{id}', [App\Http\Controllers\StudentController::class, 'deleteStudentMarks']);
 Route::put('/student-mark', [App\Http\Controllers\StudentController::class, 'updateStudentMarks']);
+
+Route::get('/exam', [App\Http\Controllers\StudentController::class, 'getExamSchedule']);
+Route::post('/exam', [App\Http\Controllers\StudentController::class, 'createExamSchedule']);
+Route::delete('/exam/{id}', [App\Http\Controllers\StudentController::class, 'deleteExamSchedule']);
+Route::put('/exam', [App\Http\Controllers\StudentController::class, 'updateExamSchedule']);
