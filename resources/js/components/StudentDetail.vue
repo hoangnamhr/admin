@@ -13,7 +13,7 @@
                                 v-model="params.id"
                                 class="form-control"
                                 id="student_id"
-                                name="student_id"
+                                name="Id"
                                 v-validate="'required'"
                             />
                             <span class="error-message">{{
@@ -55,7 +55,7 @@
                                 v-model="params.phone_number"
                                 class="form-control"
                                 id="phone_number"
-                                name="phone_number"
+                                name="Phone number"
                                 v-validate="'required|numeric'"
                             />
                             <span class="error-message">{{
@@ -143,6 +143,7 @@ export default {
                 .put("/students", this.params)
                 .then((response) => {
                     this.students = response.data;
+                    Vue.toasted.success("Updated successful");
                     this.$router.push({ name: "students" });
                 })
                 .catch((error) => {
@@ -155,6 +156,7 @@ export default {
                 .post("/students", this.params)
                 .then((response) => {
                     this.students = response.data;
+                    Vue.toasted.success("Created successful");
                     this.$router.push({ name: "students" });
                 })
                 .catch((error) => {

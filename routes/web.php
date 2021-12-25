@@ -19,6 +19,7 @@ Route::get('/student-detail', [App\Http\Controllers\HomeController::class, 'welc
 Route::get('/student-marks', [App\Http\Controllers\HomeController::class, 'welcome']);
 Route::get('/student-marks-detail', [App\Http\Controllers\HomeController::class, 'welcome']);
 Route::get('/exam-schedule', [App\Http\Controllers\HomeController::class, 'welcome']);
+Route::get('/exam-schedule-detail', [App\Http\Controllers\HomeController::class, 'welcome']);
 
 Auth::routes();
 
@@ -41,3 +42,4 @@ Route::get('/exam', [App\Http\Controllers\StudentController::class, 'getExamSche
 Route::post('/exam', [App\Http\Controllers\StudentController::class, 'createExamSchedule']);
 Route::delete('/exam/{id}', [App\Http\Controllers\StudentController::class, 'deleteExamSchedule']);
 Route::put('/exam', [App\Http\Controllers\StudentController::class, 'updateExamSchedule']);
+Route::put('/delete-exam', [App\Http\Controllers\StudentController::class, 'deleteExamSchedules']);

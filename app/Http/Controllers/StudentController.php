@@ -23,7 +23,7 @@ class StudentController extends Controller
 
     public function deleteStudent(Request $request, $id)
     {
-        Students::where('id', $id)->first();
+        Students::where('id', $id)->delete();
         StudentMarks::where('student_id', $id)->delete();
         ExamSchedule::where('student_id', $id)->delete();
         return response()->json("success");
@@ -138,6 +138,14 @@ class StudentController extends Controller
             return $query->where('student_id','LIKE','%'.$request->student_id.'%');
         })->when(!empty($request->subject), function($query) use ($request) {
             return $query->where('subject','LIKE','%'.$request->subject.'%');
-        })->select('id', 'class', 'student_id', 'subject', 'date')->get();
+        })->leftJoin('students', 'students.id', 'exam_schedule.student_id')->select('exam_schedule.id', 'exam_schedule.class', 'students.full_name as name', 'subject', 'date')->get();
+    }
+
+    public function deleteExamSchedules(Request $request)
+    {
+        ExamSchedule::whereIn('id', $request->ids)
+            ->delete();
+
+        return response()->json("success");
     }
 }

@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <label for="class">Class</label>
                             <input
-                                type="number"
+                                type="text"
                                 v-model="params.class"
                                 class="form-control"
                                 id="class"
@@ -51,12 +51,11 @@
                         <div class="form-group">
                             <label for="date">Semester</label>
                             <input
-                                type="date"
+                                type="datetime-local"
                                 v-model="params.date"
                                 class="form-control"
                                 id="date"
                                 name="date"
-                                v-validate="'required|numeric'"
                             />
                             <span class="error-message">{{
                                 errors.first("date")

@@ -4,17 +4,18 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import VueRouter from 'vue-router'
-import Routes from './routes';
-import App from './App.vue';
-import VeeValidate from 'vee-validate';
+import VueRouter from "vue-router";
+import Routes from "./routes";
+import App from "./App.vue";
+import VeeValidate from "vee-validate";
+import Toasted from "vue-toasted";
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue').default;
-Vue.use(VueRouter)
+window.Vue = require("vue").default;
+Vue.use(VueRouter);
 Vue.use(VeeValidate);
-
+Vue.use(Toasted);
 
 const router = new VueRouter(Routes);
 
@@ -29,7 +30,7 @@ const router = new VueRouter(Routes);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('app', require('./App.vue').default);
+Vue.component("app", require("./App.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -37,7 +38,7 @@ Vue.component('app', require('./App.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
- const app = new Vue({
+const app = new Vue({
     router,
-    render: h => h(App),
-  }).$mount('#app');
+    render: (h) => h(App),
+}).$mount("#app");

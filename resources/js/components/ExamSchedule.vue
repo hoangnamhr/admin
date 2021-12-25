@@ -1,5 +1,5 @@
 <template>
-    <div class="container home">
+    <div class="container exam">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -36,6 +36,13 @@
                             >
                                 Create
                             </button>
+                            <button
+                                class="btn btn-danger btn-sm"
+                                @click="deleteStudents()"
+                                :disabled="dataDelete.length == 0"
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
 
@@ -47,6 +54,8 @@
                                     <th>Subject</th>
                                     <th>Student Name</th>
                                     <th>Date</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,12 +97,15 @@
                                         >
                                             Create mask
                                         </button>
-                                        <button
-                                            class="btn btn-danger btn-sm"
-                                            @click="deleteStudent(student.id)"
-                                        >
-                                            Delete
-                                        </button>
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            :checked="
+                                                dataDelete.includes(student.id)
+                                            "
+                                            @click="selectRecord(student.id)"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
@@ -112,9 +124,17 @@ export default {
         return {
             examSchedules: [],
             searchKey: "",
+            dataDelete: [],
         };
     },
     methods: {
+        selectRecord(id) {
+            if (this.dataDelete.includes(id)) {
+                this.dataDelete = this.dataDelete.filter((item) => item !== id);
+                return;
+            }
+            this.dataDelete.push(id);
+        },
         getStudent() {
             axios
                 .get("/exam")
@@ -125,9 +145,12 @@ export default {
                     console.log(error);
                 });
         },
-        deleteStudent(id) {
+        deleteStudents() {
+            const params = {
+                ids: this.dataDelete,
+            };
             axios
-                .delete(`/exam/${id}`)
+                .put(`/delete-exam`, params)
                 .then((response) => {
                     this.getStudent();
                 })
@@ -153,7 +176,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.home {
+.exam {
     .card-header {
         div {
             margin: 0px 10px;
@@ -161,6 +184,9 @@ export default {
         button {
             margin-left: 10px;
         }
+    }
+    input[type="checkbox"] {
+        margin-top: 10px;
     }
 }
 </style>

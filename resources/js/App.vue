@@ -36,9 +36,9 @@
                             class="nav-link"
                             @click="$router.push({ name: 'exam-schedule' })"
                             :class="{
-                                'nav-active': [
-                                    'exam-schedule',
-                                ].includes($route.name),
+                                'nav-active': ['exam-schedule'].includes(
+                                    $route.name
+                                ),
                             }"
                             href="#"
                             >Exam Schedule</a

@@ -129,6 +129,7 @@ export default {
                 .delete(`/students/${id}`)
                 .then((response) => {
                     this.getStudent();
+                    Vue.toasted.success("Deleted");
                 })
                 .catch((error) => {
                     console.log(error);
